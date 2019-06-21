@@ -101,69 +101,71 @@
 
   var isFirstDrag = true;
 
+  var startCoords = {};
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    var mainPinStartX = mainPin.offsetLeft - shift.x;
+    var mainPinStartY = mainPin.offsetTop - shift.y;
+
+    var mainPinPointerX = mainPinStartX + mainPinHalfWidth;
+    var mainPinPointerY = mainPinStartY + MAIN_PIN_ACTIVE_HEIGHT;
+
+    if (mainPinPointerX < advertisementProperties.x[0]) {
+      mainPin.style.left = advertisementProperties.x[0] - mainPinHalfWidth + 'px';
+    } else if (mainPinPointerX > advertisementProperties.x[1]) {
+      mainPin.style.left = advertisementProperties.x[1] - mainPinHalfWidth + 'px';
+    } else {
+      mainPin.style.left = mainPinStartX + 'px';
+    }
+
+    if (mainPinPointerY < advertisementProperties.y[0]) {
+      mainPin.style.top = advertisementProperties.y[0] - MAIN_PIN_ACTIVE_HEIGHT + 'px';
+    } else if (mainPinPointerY > advertisementProperties.y[1]) {
+      mainPin.style.top = advertisementProperties.y[1] - MAIN_PIN_ACTIVE_HEIGHT + 'px';
+    } else {
+      mainPin.style.top = mainPinStartY + 'px';
+    }
+
+    addressField.value = mainPinPointerX + ', ' + mainPinPointerY;
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    if (isFirstDrag) {
+      createPins(createAdvertisements(advertisementProperties, 8));
+
+      map.classList.remove('map--faded');
+      adForm.classList.remove('ad-form--disabled');
+
+      toggleDisableAttr(adFormElements, false);
+      toggleDisableAttr(mapFiltersElements, false);
+    }
+
+    isFirstDrag = false;
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
   mainPin.addEventListener('mousedown', function (downEvt) {
     downEvt.preventDefault();
 
-    var startCoords = {
+    startCoords = {
       x: downEvt.clientX,
       y: downEvt.clientY
-    };
-
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
-
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
-
-      var mainPinStartX = mainPin.offsetLeft - shift.x;
-      var mainPinStartY = mainPin.offsetTop - shift.y;
-
-      var mainPinPointerX = mainPinStartX + mainPinHalfWidth;
-      var mainPinPointerY = mainPinStartY + MAIN_PIN_ACTIVE_HEIGHT;
-
-      if (mainPinPointerX < advertisementProperties.x[0]) {
-        mainPin.style.left = advertisementProperties.x[0] - mainPinHalfWidth + 'px';
-      } else if (mainPinPointerX > advertisementProperties.x[1]) {
-        mainPin.style.left = advertisementProperties.x[1] - mainPinHalfWidth + 'px';
-      } else {
-        mainPin.style.left = mainPinStartX + 'px';
-      }
-
-      if (mainPinPointerY < advertisementProperties.y[0]) {
-        mainPin.style.top = advertisementProperties.y[0] - MAIN_PIN_ACTIVE_HEIGHT + 'px';
-      } else if (mainPinPointerY > advertisementProperties.y[1]) {
-        mainPin.style.top = advertisementProperties.y[1] - MAIN_PIN_ACTIVE_HEIGHT + 'px';
-      } else {
-        mainPin.style.top = mainPinStartY + 'px';
-      }
-
-      addressField.value = mainPinPointerX + ', ' + mainPinPointerY;
-    };
-
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-
-      if (isFirstDrag) {
-        createPins(createAdvertisements(advertisementProperties, 8));
-
-        map.classList.remove('map--faded');
-        adForm.classList.remove('ad-form--disabled');
-
-        toggleDisableAttr(adFormElements, false);
-        toggleDisableAttr(mapFiltersElements, false);
-      }
-
-      isFirstDrag = false;
-
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
     };
 
     document.addEventListener('mousemove', onMouseMove);
