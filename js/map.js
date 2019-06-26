@@ -17,7 +17,8 @@
   var mainPinCenterY = mainPin.offsetTop + mainPinHalfHeight;
   var MAIN_PIN_ACTIVE_HEIGHT = 84;
 
-  addressField.value = mainPinCenterX + ', ' + mainPinCenterY;
+  var isFirstDrag = true;
+  var startCoords = {};
 
   var toggleDisableAttr = function (elements, isDisabled) {
     for (var i = 0; i < elements.length; i++) {
@@ -28,14 +29,6 @@
       }
     }
   };
-
-  toggleDisableAttr(adFormElements, true);
-  toggleDisableAttr(mapFiltersElements, true);
-
-
-  var isFirstDrag = true;
-
-  var startCoords = {};
 
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
@@ -58,16 +51,20 @@
 
     if (mainPinPointerX < window.common.advertisementProperties.x[0]) {
       mainPin.style.left = window.common.advertisementProperties.x[0] - mainPinHalfWidth + 'px';
+      mainPinPointerX = window.common.advertisementProperties.x[0];
     } else if (mainPinPointerX > window.common.advertisementProperties.x[1]) {
       mainPin.style.left = window.common.advertisementProperties.x[1] - mainPinHalfWidth + 'px';
+      mainPinPointerX = window.common.advertisementProperties.x[1];
     } else {
       mainPin.style.left = mainPinStartX + 'px';
     }
 
     if (mainPinPointerY < window.common.advertisementProperties.y[0]) {
       mainPin.style.top = window.common.advertisementProperties.y[0] - MAIN_PIN_ACTIVE_HEIGHT + 'px';
+      mainPinPointerY = window.common.advertisementProperties.y[0];
     } else if (mainPinPointerY > window.common.advertisementProperties.y[1]) {
       mainPin.style.top = window.common.advertisementProperties.y[1] - MAIN_PIN_ACTIVE_HEIGHT + 'px';
+      mainPinPointerY = window.common.advertisementProperties.y[1];
     } else {
       mainPin.style.top = mainPinStartY + 'px';
     }
@@ -106,5 +103,9 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  toggleDisableAttr(adFormElements, true);
+  toggleDisableAttr(mapFiltersElements, true);
+  addressField.value = mainPinCenterX + ', ' + mainPinCenterY;
 
 })();
