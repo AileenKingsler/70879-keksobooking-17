@@ -2,6 +2,7 @@
 
 (function () {
 
+  var ESC_KEY_CODE = 27;
   var mapPinsContainer = document.querySelector('.map__pins');
 
   window.common = {
@@ -15,6 +16,11 @@
     },
     getRandomValue: function (properties) {
       return properties[window.common.getRandomInt(0, properties.length - 1)];
+    },
+    isEscEvent: function (evt, action) {
+      if (evt.keyCode === ESC_KEY_CODE) {
+        action();
+      }
     }
   };
 
