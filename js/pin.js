@@ -19,28 +19,6 @@
   };
 
   window.pin = {
-    createAdvertisements: function (properties, quantity) {
-      var items = [];
-
-      for (var i = 0; i < quantity; i++) {
-        var item = {
-          author: {
-            avatar: 'img/avatars/user0' + (i + 1) + '.png'
-          },
-          offer: {
-            title: 'заголовок объявления',
-            type: window.common.getRandomValue(properties.types)
-          },
-          location: {
-            x: window.common.getRandomInt(properties.x[0], properties.x[1]),
-            y: window.common.getRandomInt(properties.y[0], properties.y[1])
-          }
-        };
-        items.push(item);
-      }
-
-      return items;
-    },
     createPins: function (advertismentsList) {
       var fragment = document.createDocumentFragment();
 

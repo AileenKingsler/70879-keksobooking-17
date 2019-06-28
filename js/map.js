@@ -76,8 +76,11 @@
     upEvt.preventDefault();
 
     if (isFirstDrag) {
-      var advertismentsList = window.pin.createAdvertisements(window.common.advertisementProperties, 8);
-      window.pin.createPins(advertismentsList);
+      var loadAdvertisments = function (data) {
+        window.pin.createPins(data);
+      };
+
+      window.backend.load(loadAdvertisments, window.loadingError);
 
       map.classList.remove('map--faded');
       adForm.classList.remove('ad-form--disabled');
