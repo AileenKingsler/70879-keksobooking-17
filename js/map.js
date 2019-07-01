@@ -2,45 +2,25 @@
 
 (function () {
 
-  var adForm = document.querySelector('.ad-form');
-  var adFormElements = adForm.querySelectorAll('fieldset');
-  var addressField = adForm.querySelector('#address');
-
-  var map = document.querySelector('.map');
-  var mapFilters = map.querySelector('.map__filters');
-  var mapFiltersElements = mapFilters.querySelectorAll('fieldset, select');
-
-  var mainPin = map.querySelector('.map__pin--main');
+  var mainPin = document.querySelector('.map__pin--main');
   var mainPinHalfWidth = Math.round(mainPin.offsetWidth / 2);
-  var mainPinHalfHeight = Math.round(mainPin.offsetHeight / 2);
-  var mainPinCenterX = mainPin.offsetLeft + mainPinHalfWidth;
-  var mainPinCenterY = mainPin.offsetTop + mainPinHalfHeight;
   var MAIN_PIN_ACTIVE_HEIGHT = 84;
 
-  var isFirstDrag = true;
+  var addressField = document.querySelector('#address');
+
   var startCoords = {};
 
-  var toggleDisableAttr = function (elements, isDisabled) {
-    for (var i = 0; i < elements.length; i++) {
-      if (isDisabled) {
-        elements[i].setAttribute('disabled', 'disabled');
-      } else {
-        elements[i].removeAttribute('disabled');
-      }
-    }
-  };
-
-  var onMouseMove = function (moveEvt) {
-    moveEvt.preventDefault();
+  var onMouseMove = function (evt) {
+    evt.preventDefault();
 
     var shift = {
-      x: startCoords.x - moveEvt.clientX,
-      y: startCoords.y - moveEvt.clientY
+      x: startCoords.x - evt.clientX,
+      y: startCoords.y - evt.clientY
     };
 
     startCoords = {
-      x: moveEvt.clientX,
-      y: moveEvt.clientY
+      x: evt.clientX,
+      y: evt.clientY
     };
 
     var mainPinStartX = mainPin.offsetLeft - shift.x;
@@ -72,43 +52,31 @@
     addressField.value = mainPinPointerX + ', ' + mainPinPointerY;
   };
 
-  var onMouseUp = function (upEvt) {
-    upEvt.preventDefault();
+  var onMouseUp = function (evt) {
+    evt.preventDefault();
 
-    if (isFirstDrag) {
-      var loadAdvertisments = function (data) {
-        window.pin.createPins(data);
-      };
-
-      window.backend.load(loadAdvertisments, window.loadingError);
-
-      map.classList.remove('map--faded');
-      adForm.classList.remove('ad-form--disabled');
-
-      toggleDisableAttr(adFormElements, false);
-      toggleDisableAttr(mapFiltersElements, false);
+    if (window.common.isFirstDrag) {
+      window.pageState.activate();
     }
 
-    isFirstDrag = false;
+    window.common.isFirstDrag = false;
 
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
   };
 
-  mainPin.addEventListener('mousedown', function (downEvt) {
-    downEvt.preventDefault();
+  mainPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
 
     startCoords = {
-      x: downEvt.clientX,
-      y: downEvt.clientY
+      x: evt.clientX,
+      y: evt.clientY
     };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  toggleDisableAttr(adFormElements, true);
-  toggleDisableAttr(mapFiltersElements, true);
-  addressField.value = mainPinCenterX + ', ' + mainPinCenterY;
+  window.pageState.deactivate();
 
 })();
