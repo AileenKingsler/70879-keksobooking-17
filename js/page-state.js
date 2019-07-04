@@ -19,27 +19,20 @@
 
   var addressField = adForm.querySelector('#address');
 
-  var disableElement = function (elements, setDisabled) {
-    elements.forEach(function (element) {
-      element.disabled = setDisabled;
-    });
-  };
-
   window.pageState = {
     activate: function () {
       map.classList.remove('map--faded');
       adForm.classList.remove('ad-form--disabled');
 
-      disableElement(adFormElements, false);
-      disableElement(mapFiltersElements, false);
+      window.common.disableElement(adFormElements, false);
 
       window.backend.load(window.selectAdvertisments, window.loadingError);
     },
     deactivate: function () {
-      disableElement(adFormElements, true);
-      disableElement(mapFiltersElements, true);
+      window.common.disableElement(adFormElements, true);
+      window.common.disableElement(mapFiltersElements, true);
 
-      addressField.value = mainPinCenterX + ', ' + mainPinCenterY; // не работает при сбросе формы в form.js
+      addressField.value = mainPinCenterX + ', ' + mainPinCenterY;
     },
     reset: function () {
       map.classList.add('map--faded');

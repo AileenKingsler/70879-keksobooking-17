@@ -14,6 +14,8 @@
   var capacityField = adForm.querySelector('#capacity');
   var capacityOptions = capacityField.querySelectorAll('option');
 
+  var resetBtn = adForm.querySelector('.ad-form__reset');
+
   var typesMap = {
     'bungalo': 0,
     'flat': 1000,
@@ -64,7 +66,8 @@
 
   roomNumberField.addEventListener('change', onRoomsFieldChange);
 
-  adForm.addEventListener('reset', function () {
+  resetBtn.addEventListener('click', function () {
+    adForm.reset();
     window.pageState.reset();
     window.pageState.deactivate();
   });

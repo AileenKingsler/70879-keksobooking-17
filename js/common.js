@@ -6,6 +6,7 @@
   var mapPinsContainer = document.querySelector('.map__pins');
 
   window.common = {
+    isFirstDrag: true,
     advertisementProperties: {
       x: [0, mapPinsContainer.offsetWidth],
       y: [130, 630]
@@ -15,7 +16,11 @@
         action();
       }
     },
-    isFirstDrag: true
+    disableElement: function (elements, setDisabled) {
+      elements.forEach(function (element) {
+        element.disabled = setDisabled;
+      });
+    }
   };
 
 })();
