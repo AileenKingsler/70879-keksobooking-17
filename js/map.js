@@ -65,6 +65,16 @@
     document.removeEventListener('mouseup', onMouseUp);
   };
 
+  var onClick = function (evt) {
+    evt.preventDefault();
+
+    if (window.common.isFirstDrag) {
+      window.pageState.activate();
+    }
+
+    window.common.isFirstDrag = false;
+  };
+
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -76,6 +86,8 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  mainPin.addEventListener('click', onClick);
 
   window.pageState.deactivate();
 
