@@ -23,7 +23,9 @@
       var fragment = document.createDocumentFragment();
 
       advertismentsList.forEach(function (advertisment) {
-        fragment.appendChild(renderPin(advertisment));
+        if (advertisment.offer !== undefined) {
+          fragment.appendChild(renderPin(advertisment));
+        }
       });
 
       mapPinsContainer.appendChild(fragment);
