@@ -19,14 +19,19 @@
   };
 
   window.pin = {
-    createPins: function (advertismentsList) {
+    create: function (advertismentsList) {
       var fragment = document.createDocumentFragment();
 
-      for (var i = 0; i < advertismentsList.length; i++) {
-        fragment.appendChild(renderPin(advertismentsList[i]));
-      }
+      advertismentsList.forEach(function (advertisment) {
+        fragment.appendChild(renderPin(advertisment));
+      });
 
       mapPinsContainer.appendChild(fragment);
+    },
+    delete: function (elements) {
+      elements.forEach(function (element) {
+        element.parentNode.removeChild(element);
+      });
     }
   };
 
