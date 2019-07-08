@@ -93,14 +93,30 @@
   };
 
   window.card = {
-    create: function (advertismentsList) {
-      var fragment = document.createDocumentFragment();
+    create: function (advertisment) {
+      var card = renderCard(advertisment);
+      var cardCloseBtn = card.querySelector('.popup__close');
 
-      advertismentsList.forEach(function (advertisment) {
-        fragment.appendChild(renderCard(advertisment));
-      });
+      var deleteCard = function () {
+        if (card) {
+          window.card.delete(card);
+        }
 
-      map.insertBefore(fragment, mapFiltersContainer);
+        document.removeEventListener('keydown', onCardEscPress);
+      };
+
+      var onCardEscPress = function (evt) {
+        window.common.isEscEvent(evt, deleteCard);
+      };
+
+      cardCloseBtn.addEventListener('click', deleteCard);
+
+      document.addEventListener('keydown', onCardEscPress);
+
+      map.insertBefore(card, mapFiltersContainer);
+    },
+    delete: function (element) {
+      element.parentNode.removeChild(element);
     }
   };
 
