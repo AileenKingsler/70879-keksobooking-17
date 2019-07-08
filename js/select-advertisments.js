@@ -35,8 +35,6 @@
       .filter(typeFilter)
       .slice(0, PINS_MAX_QUANTITY));
 
-    window.card.create(advertisements.slice(0, 1));
-
     if (Array.from(mapFiltersElements).every(isDisabled)) {
       window.common.disableElement(mapFiltersElements, false);
     }
