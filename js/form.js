@@ -56,6 +56,35 @@
     });
   };
 
+  var resetPage = function () {
+    adForm.reset();
+    window.pageState.reset();
+    window.pageState.deactivate();
+  };
+
+  var onSuccess = function () {
+    var successTemplate = document.querySelector('#success').content.querySelector('.success');
+    var success = successTemplate.cloneNode(true);
+    var main = document.querySelector('main');
+
+    var closeSuccess = function () {
+      success.parentNode.removeChild(success);
+      document.removeEventListener('keydown', onSuccessEscPress);
+    };
+
+    var onSuccessEscPress = function (evt) {
+      window.common.isEscEvent(evt, closeSuccess);
+    };
+
+    main.appendChild(success);
+
+    success.addEventListener('click', closeSuccess);
+
+    document.addEventListener('keydown', onSuccessEscPress);
+
+    resetPage();
+  };
+
   typeField.addEventListener('change', onTypeFieldChange);
 
   timeInField.addEventListener('change', function () {
@@ -74,10 +103,11 @@
 
   capacityField.addEventListener('change', onCapacityFieldChange);
 
-  resetBtn.addEventListener('click', function () {
-    adForm.reset();
-    window.pageState.reset();
-    window.pageState.deactivate();
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(adForm), onSuccess, window.backend.error);
   });
+
+  resetBtn.addEventListener('click', resetPage);
 
 })();

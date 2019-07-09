@@ -98,9 +98,7 @@
       var cardCloseBtn = card.querySelector('.popup__close');
 
       var deleteCard = function () {
-        if (card) {
-          window.card.delete(card);
-        }
+        window.card.delete(card);
 
         document.removeEventListener('keydown', onCardEscPress);
       };
@@ -116,7 +114,9 @@
       map.insertBefore(card, mapFiltersContainer);
     },
     delete: function (element) {
-      element.parentNode.removeChild(element);
+      if (element) {
+        element.parentNode.removeChild(element);
+      }
     }
   };
 
