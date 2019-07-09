@@ -23,10 +23,6 @@
     'palace': 10000
   };
 
-  var onTypeFieldChange = function () {
-    priceField.min = priceField.placeholder = typesMap[typeField.value];
-  };
-
   var roomsMap = {
     '1': ['1'],
     '2': ['1', '2'],
@@ -34,18 +30,28 @@
     '100': ['0']
   };
 
-  var onRoomsFieldChange = function () {
-    var isFirstAppropriateOption = true;
+  var onTypeFieldChange = function () {
+    priceField.min = priceField.placeholder = typesMap[typeField.value];
+  };
 
+  var onRoomsFieldChange = function () {
     capacityOptions.forEach(function (option) {
-      if (roomsMap[roomNumberField.value].indexOf(option.value) !== -1) {
-        option.disabled = false;
-        if (isFirstAppropriateOption) {
-          option.selected = true;
-          isFirstAppropriateOption = false;
-        }
-      } else {
+      if (roomsMap[roomNumberField.value].indexOf(option.value) === -1) {
         option.disabled = true;
+      } else {
+        option.disabled = false;
+      }
+
+      if (option.disabled === true && option.selected === true) {
+        capacityField.setCustomValidity('Please, choose appropriate capacity');
+      }
+    });
+  };
+
+  var onCapacityChange = function () {
+    capacityOptions.forEach(function (option) {
+      if (!(option.disabled === true && option.selected === true)) {
+        capacityField.setCustomValidity('');
       }
     });
   };
@@ -65,6 +71,8 @@
   });
 
   roomNumberField.addEventListener('change', onRoomsFieldChange);
+
+  capacityField.addEventListener('change', onCapacityChange);
 
   resetBtn.addEventListener('click', function () {
     adForm.reset();
