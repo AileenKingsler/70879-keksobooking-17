@@ -73,6 +73,11 @@
     }
 
     window.common.isFirstDrag = false;
+
+    var mainPinPointerX = mainPin.offsetLeft + mainPinHalfWidth;
+    var mainPinPointerY = mainPin.offsetTop + MAIN_PIN_ACTIVE_HEIGHT;
+
+    addressField.value = mainPinPointerX + ', ' + mainPinPointerY;
   };
 
   mainPin.addEventListener('mousedown', function (evt) {

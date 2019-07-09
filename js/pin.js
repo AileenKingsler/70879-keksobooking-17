@@ -30,9 +30,7 @@
 
           var onPinClick = function (evt) {
             var card = document.querySelector('.map__card');
-            if (card) {
-              window.card.delete(card);
-            }
+            window.card.delete(card);
 
             var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
             pins.forEach(function (it) {

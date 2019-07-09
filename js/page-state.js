@@ -26,7 +26,7 @@
 
       window.common.disableElement(adFormElements, false);
 
-      window.backend.load(window.selectAdvertisments, window.loadingError);
+      window.backend.load(window.selectAdvertisments, window.backend.error);
     },
     deactivate: function () {
       window.common.disableElement(adFormElements, true);
@@ -40,6 +40,9 @@
 
       var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
       window.pin.delete(pins);
+
+      var card = document.querySelector('.map__card');
+      window.card.delete(card);
 
       mainPin.style.left = mainPinStartX + 'px';
       mainPin.style.top = mainPinStartY + 'px';
