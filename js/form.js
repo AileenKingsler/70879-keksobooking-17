@@ -48,7 +48,7 @@
     });
   };
 
-  var onCapacityChange = function () {
+  var onCapacityFieldChange = function () {
     capacityOptions.forEach(function (option) {
       if (!(option.disabled === true && option.selected === true)) {
         capacityField.setCustomValidity('');
@@ -72,7 +72,7 @@
 
   roomNumberField.addEventListener('change', onRoomsFieldChange);
 
-  capacityField.addEventListener('change', onCapacityChange);
+  capacityField.addEventListener('change', onCapacityFieldChange);
 
   resetBtn.addEventListener('click', function () {
     adForm.reset();
