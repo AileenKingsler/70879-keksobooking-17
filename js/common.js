@@ -3,12 +3,12 @@
 (function () {
 
   var ESC_KEY_CODE = 27;
-  var mapPinsContainer = document.querySelector('.map__pins');
+  var mapPins = document.querySelector('.map__pins');
 
   window.common = {
     isFirstDrag: true,
     advertisementProperties: {
-      x: [0, mapPinsContainer.offsetWidth],
+      x: [0, mapPins.offsetWidth],
       y: [130, 630]
     },
     isEscEvent: function (evt, action) {

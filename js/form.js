@@ -67,19 +67,18 @@
     var success = successTemplate.cloneNode(true);
     var main = document.querySelector('main');
 
-    var closeSuccess = function () {
+    var closeSuccessWindow = function () {
       success.parentNode.removeChild(success);
       document.removeEventListener('keydown', onSuccessEscPress);
     };
 
     var onSuccessEscPress = function (evt) {
-      window.common.isEscEvent(evt, closeSuccess);
+      window.common.isEscEvent(evt, closeSuccessWindow);
     };
 
     main.appendChild(success);
 
-    success.addEventListener('click', closeSuccess);
-
+    success.addEventListener('click', closeSuccessWindow);
     document.addEventListener('keydown', onSuccessEscPress);
 
     resetPage();

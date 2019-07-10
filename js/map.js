@@ -2,9 +2,9 @@
 
 (function () {
 
+  var MAIN_PIN_ACTIVE_HEIGHT = 84;
   var mainPin = document.querySelector('.map__pin--main');
   var mainPinHalfWidth = Math.round(mainPin.offsetWidth / 2);
-  var MAIN_PIN_ACTIVE_HEIGHT = 84;
 
   var addressField = document.querySelector('#address');
 
@@ -65,7 +65,7 @@
     document.removeEventListener('mouseup', onMouseUp);
   };
 
-  var onClick = function (evt) {
+  var onMainPinClick = function (evt) {
     evt.preventDefault();
 
     if (window.common.isFirstDrag) {
@@ -92,7 +92,7 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  mainPin.addEventListener('click', onClick);
+  mainPin.addEventListener('click', onMainPinClick);
 
   window.pageState.deactivate();
 
