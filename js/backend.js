@@ -66,7 +66,6 @@
       main.appendChild(error);
 
       error.addEventListener('click', closeError);
-
       document.addEventListener('keydown', onPopupEscPress);
 
       throw new Error(message);

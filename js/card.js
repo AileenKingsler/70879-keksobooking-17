@@ -13,6 +13,16 @@
     'palace': 'Дворец'
   };
 
+  var deleteCardAndPinActiveClass = function () {
+    window.card.delete();
+
+    window.pin.deleteActiveClass();
+  };
+
+  var onCardEscPress = function (evt) {
+    window.common.isEscEvent(evt, deleteCardAndPinActiveClass);
+  };
+
   var getRoomsEnding = function (quantity) {
     var modulo100 = Math.abs(quantity) % 100;
     var modulo10 = modulo100 % 10;
@@ -41,17 +51,14 @@
   var renderCard = function (advertisment) {
     var card = cardTemplate.cloneNode(true);
 
+    card.querySelector('.popup__avatar').src = advertisment.author.avatar;
     card.querySelector('.popup__title').textContent = advertisment.offer.title;
-
     card.querySelector('.popup__text--address').textContent = advertisment.offer.address;
-
     card.querySelector('.popup__text--price').textContent = advertisment.offer.price + '₽/ночь';
-
     card.querySelector('.popup__type').textContent = typesMap[advertisment.offer.type];
-
     card.querySelector('.popup__text--capacity').textContent = advertisment.offer.rooms + ' ' + getRoomsEnding(advertisment.offer.rooms) + ' для ' + advertisment.offer.guests + ' ' + getGuestsEnding(advertisment.offer.guests);
-
     card.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertisment.offer.checkin + ', выезд до ' + advertisment.offer.checkout;
+    card.querySelector('.popup__description').textContent = advertisment.offer.description;
 
     if (advertisment.offer.features.length) {
       card.querySelectorAll('.popup__feature').forEach(function (element) {
@@ -71,8 +78,6 @@
       card.querySelector('.popup__features').remove();
     }
 
-    card.querySelector('.popup__description').textContent = advertisment.offer.description;
-
     if (advertisment.offer.photos.length) {
       advertisment.offer.photos.forEach(function (photoSrc, index) {
         if (index === 0) {
@@ -87,8 +92,6 @@
       card.querySelector('.popup__photos').remove();
     }
 
-    card.querySelector('.popup__avatar').src = advertisment.author.avatar;
-
     return card;
   };
 
@@ -97,26 +100,18 @@
       var card = renderCard(advertisment);
       var cardCloseBtn = card.querySelector('.popup__close');
 
-      var deleteCard = function () {
-        window.card.delete(card);
-
-        document.removeEventListener('keydown', onCardEscPress);
-      };
-
-      var onCardEscPress = function (evt) {
-        window.common.isEscEvent(evt, deleteCard);
-      };
-
-      cardCloseBtn.addEventListener('click', deleteCard);
-
+      cardCloseBtn.addEventListener('click', deleteCardAndPinActiveClass);
       document.addEventListener('keydown', onCardEscPress);
 
       map.insertBefore(card, mapFiltersContainer);
     },
-    delete: function (element) {
-      if (element) {
-        element.parentNode.removeChild(element);
+    delete: function () {
+      var card = document.querySelector('.map__card');
+      if (card) {
+        card.parentNode.removeChild(card);
       }
+
+      document.removeEventListener('keydown', onCardEscPress);
     }
   };
 
