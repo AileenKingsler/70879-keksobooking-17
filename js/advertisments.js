@@ -32,38 +32,23 @@
   };
 
   var selectByType = function (advertisement) {
-    if (typeFilter.value === 'any') {
-      return true;
-    }
-    return advertisement.offer.type === typeFilter.value;
+    return typeFilter.value === 'any' || advertisement.offer.type === typeFilter.value;
   };
 
   var selectByPrice = function (advertisement) {
-    if (priceFilter.value === 'any') {
-      return true;
-    }
-    return advertisement.offer.price >= pricesMap[priceFilter.value][0] && advertisement.offer.price <= pricesMap[priceFilter.value][1];
+    return priceFilter.value === 'any' || advertisement.offer.price >= pricesMap[priceFilter.value][0] && advertisement.offer.price <= pricesMap[priceFilter.value][1];
   };
 
   var selectByRoomsQuantity = function (advertisement) {
-    if (roomsFilter.value === 'any') {
-      return true;
-    }
-    return advertisement.offer.rooms === parseInt(roomsFilter.value, 10);
+    return roomsFilter.value === 'any' || advertisement.offer.rooms === parseInt(roomsFilter.value, 10);
   };
 
   var selectByGuestsQuantity = function (advertisement) {
-    if (guestsFilter.value === 'any') {
-      return true;
-    }
-    return advertisement.offer.guests === parseInt(guestsFilter.value, 10);
+    return guestsFilter.value === 'any' || advertisement.offer.guests === parseInt(guestsFilter.value, 10);
   };
 
   var selectByFeature = function (advertisement, element, feature) {
-    if (!element.checked) {
-      return true;
-    }
-    return advertisement.offer.features.indexOf(feature) + 1;
+    return !element.checked || advertisement.offer.features.indexOf(feature) + 1;
   };
 
   var selectByWifi = function (advertisement) {

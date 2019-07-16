@@ -4,6 +4,7 @@
 
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
+
   var pinActiveClass = 'map__pin--active';
   var mapPins = document.querySelector('.map__pins');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');

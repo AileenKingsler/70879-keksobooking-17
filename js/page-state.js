@@ -26,7 +26,7 @@
 
       window.common.disableElement(adFormElements, false);
 
-      window.backend.load(window.advertisments.show, window.backend.error);
+      window.backend.load(window.advertisments.show, window.backend.showError);
     },
     deactivate: function () {
       window.common.disableElement(adFormElements, true);

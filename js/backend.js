@@ -2,6 +2,8 @@
 
 (function () {
 
+  var SUCCESS_CODE = 200;
+
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var error = errorTemplate.cloneNode(true);
   var main = document.querySelector('main');
@@ -21,7 +23,7 @@
       xhr.responseType = 'json';
 
       xhr.addEventListener('load', function () {
-        if (xhr.status === 200) {
+        if (xhr.status === SUCCESS_CODE) {
           onLoad(xhr.response);
         } else {
           onError('Cтатус ответа: ' + xhr.status);
@@ -44,7 +46,7 @@
       xhr.responseType = 'json';
 
       xhr.addEventListener('load', function () {
-        if (xhr.status === 200) {
+        if (xhr.status === SUCCESS_CODE) {
           onLoad(xhr.response);
         } else {
           onError('Cтатус ответа: ' + xhr.status);
@@ -62,7 +64,7 @@
       xhr.open('POST', 'https://js.dump.academy/keksobooking');
       xhr.send(data);
     },
-    error: function (message) {
+    showError: function (message) {
       main.appendChild(error);
 
       error.addEventListener('click', closeError);

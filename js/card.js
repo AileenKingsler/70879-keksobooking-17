@@ -13,14 +13,14 @@
     'palace': 'Дворец'
   };
 
-  var deleteCardAndPinActiveClass = function () {
+  var onCardCloseBtnClick = function () {
     window.card.delete();
 
     window.pin.deleteActiveClass();
   };
 
   var onCardEscPress = function (evt) {
-    window.common.isEscEvent(evt, deleteCardAndPinActiveClass);
+    window.common.isEscEvent(evt, onCardCloseBtnClick);
   };
 
   var getRoomsEnding = function (quantity) {
@@ -41,11 +41,7 @@
   };
 
   var getGuestsEnding = function (quantity) {
-    if (quantity % 10 === 1) {
-      return 'гостя';
-    }
-
-    return 'гостей';
+    return quantity % 10 === 1 ? 'гостя' : 'гостей';
   };
 
   var renderCard = function (advertisment) {
@@ -100,7 +96,7 @@
       var card = renderCard(advertisment);
       var cardCloseBtn = card.querySelector('.popup__close');
 
-      cardCloseBtn.addEventListener('click', deleteCardAndPinActiveClass);
+      cardCloseBtn.addEventListener('click', onCardCloseBtnClick);
       document.addEventListener('keydown', onCardEscPress);
 
       map.insertBefore(card, mapFiltersContainer);
