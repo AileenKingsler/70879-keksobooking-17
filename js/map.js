@@ -3,53 +3,75 @@
 (function () {
 
   var MAIN_PIN_ACTIVE_HEIGHT = 84;
+
+  var ExtremeCoordinates = {
+    MIN_LEFT: 0,
+    MAX_LEFT: 1200,
+    MIN_TOP: 130,
+    MAX_TOP: 630
+  };
+
   var mainPin = document.querySelector('.map__pin--main');
   var mainPinHalfWidth = Math.round(mainPin.offsetWidth / 2);
 
   var addressField = document.querySelector('#address');
 
-  var startCoords = {};
+  var startCoords;
+
+  var Coordinates = function (x, y) {
+    this.x = x;
+    this.y = y;
+  };
+
+  Coordinates.prototype.setAddress = function () {
+    addressField.value = this.x + ', ' + this.y;
+  };
+
+  var moveMainPin = function (pinPointer, pinLeftTopCorner) {
+    if (pinPointer.x < ExtremeCoordinates.MIN_LEFT) {
+      mainPin.style.left = ExtremeCoordinates.MIN_LEFT - mainPinHalfWidth + 'px';
+      pinPointer.x = ExtremeCoordinates.MIN_LEFT;
+    } else if (pinPointer.x > ExtremeCoordinates.MAX_LEFT) {
+      mainPin.style.left = ExtremeCoordinates.MAX_LEFT - mainPinHalfWidth + 'px';
+      pinPointer.x = ExtremeCoordinates.MAX_LEFT;
+    } else {
+      mainPin.style.left = pinLeftTopCorner.x + 'px';
+    }
+
+    if (pinPointer.y < ExtremeCoordinates.MIN_TOP) {
+      mainPin.style.top = ExtremeCoordinates.MIN_TOP - MAIN_PIN_ACTIVE_HEIGHT + 'px';
+      pinPointer.y = ExtremeCoordinates.MIN_TOP;
+    } else if (pinPointer.y > ExtremeCoordinates.MAX_TOP) {
+      mainPin.style.top = ExtremeCoordinates.MAX_TOP - MAIN_PIN_ACTIVE_HEIGHT + 'px';
+      pinPointer.y = ExtremeCoordinates.MAX_TOP;
+    } else {
+      mainPin.style.top = pinLeftTopCorner.y + 'px';
+    }
+  };
+
+
+  var onMouseDown = function (evt) {
+    evt.preventDefault();
+
+    startCoords = new Coordinates(evt.clientX, evt.clientY);
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  };
 
   var onMouseMove = function (evt) {
     evt.preventDefault();
 
-    var shift = {
-      x: startCoords.x - evt.clientX,
-      y: startCoords.y - evt.clientY
-    };
+    var shift = new Coordinates(startCoords.x - evt.clientX, startCoords.y - evt.clientY);
 
-    startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
+    startCoords = new Coordinates(evt.clientX, evt.clientY);
 
-    var mainPinStartX = mainPin.offsetLeft - shift.x;
-    var mainPinStartY = mainPin.offsetTop - shift.y;
+    var mainPinStart = new Coordinates(mainPin.offsetLeft - shift.x, mainPin.offsetTop - shift.y);
+    var mainPinPointer = new Coordinates(mainPinStart.x + mainPinHalfWidth, mainPinStart.y + MAIN_PIN_ACTIVE_HEIGHT);
 
-    var mainPinPointerX = mainPinStartX + mainPinHalfWidth;
-    var mainPinPointerY = mainPinStartY + MAIN_PIN_ACTIVE_HEIGHT;
+    moveMainPin(mainPinPointer, mainPinStart);
 
-    if (mainPinPointerX < window.common.advertisementProperties.x[0]) {
-      mainPin.style.left = window.common.advertisementProperties.x[0] - mainPinHalfWidth + 'px';
-      mainPinPointerX = window.common.advertisementProperties.x[0];
-    } else if (mainPinPointerX > window.common.advertisementProperties.x[1]) {
-      mainPin.style.left = window.common.advertisementProperties.x[1] - mainPinHalfWidth + 'px';
-      mainPinPointerX = window.common.advertisementProperties.x[1];
-    } else {
-      mainPin.style.left = mainPinStartX + 'px';
-    }
-
-    if (mainPinPointerY < window.common.advertisementProperties.y[0]) {
-      mainPin.style.top = window.common.advertisementProperties.y[0] - MAIN_PIN_ACTIVE_HEIGHT + 'px';
-      mainPinPointerY = window.common.advertisementProperties.y[0];
-    } else if (mainPinPointerY > window.common.advertisementProperties.y[1]) {
-      mainPin.style.top = window.common.advertisementProperties.y[1] - MAIN_PIN_ACTIVE_HEIGHT + 'px';
-      mainPinPointerY = window.common.advertisementProperties.y[1];
-    } else {
-      mainPin.style.top = mainPinStartY + 'px';
-    }
-
-    addressField.value = mainPinPointerX + ', ' + mainPinPointerY;
+    mainPinPointer.setAddress();
   };
 
   var onMouseUp = function (evt) {
@@ -74,23 +96,12 @@
 
     window.common.isFirstDrag = false;
 
-    var mainPinPointerX = mainPin.offsetLeft + mainPinHalfWidth;
-    var mainPinPointerY = mainPin.offsetTop + MAIN_PIN_ACTIVE_HEIGHT;
+    var mainPinPointer = new Coordinates(mainPin.offsetLeft + mainPinHalfWidth, mainPin.offsetTop + MAIN_PIN_ACTIVE_HEIGHT);
 
-    addressField.value = mainPinPointerX + ', ' + mainPinPointerY;
+    mainPinPointer.setAddress();
   };
 
-  mainPin.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-
-    startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  });
+  mainPin.addEventListener('mousedown', onMouseDown);
 
   mainPin.addEventListener('click', onMainPinClick);
 
