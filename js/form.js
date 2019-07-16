@@ -36,13 +36,9 @@
 
   var onRoomsFieldChange = function () {
     capacityOptions.forEach(function (option) {
-      if (roomsMap[roomNumberField.value].indexOf(option.value) === -1) {
-        option.disabled = true;
-      } else {
-        option.disabled = false;
-      }
+      option.disabled = roomsMap[roomNumberField.value].indexOf(option.value) === -1;
 
-      if (option.disabled === true && option.selected === true) {
+      if (option.disabled && option.selected) {
         capacityField.setCustomValidity('Please, choose appropriate capacity');
       }
     });
@@ -50,14 +46,18 @@
 
   var onCapacityFieldChange = function () {
     capacityOptions.forEach(function (option) {
-      if (!(option.disabled === true && option.selected === true)) {
+      if (!(option.disabled && option.selected)) {
         capacityField.setCustomValidity('');
       }
     });
   };
 
-  var resetPage = function () {
+  var onResetBtnClick = function () {
     adForm.reset();
+    onTypeFieldChange();
+    onRoomsFieldChange();
+    window.files.resetAvatar();
+    window.files.resetPhoto();
     window.pageState.reset();
     window.pageState.deactivate();
   };
@@ -67,21 +67,21 @@
     var success = successTemplate.cloneNode(true);
     var main = document.querySelector('main');
 
-    var closeSuccessWindow = function () {
+    var onSuccessWindowClick = function () {
       success.parentNode.removeChild(success);
-      document.removeEventListener('keydown', onSuccessEscPress);
+      document.removeEventListener('keydown', onSuccessWindowEscPress);
     };
 
-    var onSuccessEscPress = function (evt) {
-      window.common.isEscEvent(evt, closeSuccessWindow);
+    var onSuccessWindowEscPress = function (evt) {
+      window.common.isEscEvent(evt, onSuccessWindowClick);
     };
 
     main.appendChild(success);
 
-    success.addEventListener('click', closeSuccessWindow);
-    document.addEventListener('keydown', onSuccessEscPress);
+    success.addEventListener('click', onSuccessWindowClick);
+    document.addEventListener('keydown', onSuccessWindowEscPress);
 
-    resetPage();
+    onResetBtnClick();
   };
 
   typeField.addEventListener('change', onTypeFieldChange);
@@ -104,9 +104,9 @@
 
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.save(new FormData(adForm), onSuccess, window.backend.error);
+    window.backend.save(new FormData(adForm), onSuccess, window.backend.showError);
   });
 
-  resetBtn.addEventListener('click', resetPage);
+  resetBtn.addEventListener('click', onResetBtnClick);
 
 })();
