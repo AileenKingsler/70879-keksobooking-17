@@ -47,32 +47,21 @@
     return guestsFilter.value === 'any' || advertisement.offer.guests === parseInt(guestsFilter.value, 10);
   };
 
-  var selectByFeature = function (advertisement, element, feature) {
-    return !element.checked || advertisement.offer.features.indexOf(feature) + 1;
+  var selectByFeature = function (advertisement, element) {
+    return !element.checked || advertisement.offer.features.indexOf(element.value) + 1;
   };
 
-  var selectByWifi = function (advertisement) {
-    return selectByFeature(advertisement, wifiFilter, 'wifi');
-  };
-
-  var selectByDishwasher = function (advertisement) {
-    return selectByFeature(advertisement, dishwasherFilter, 'dishwasher');
-  };
-
-  var selectByParking = function (advertisement) {
-    return selectByFeature(advertisement, parkingFilter, 'parking');
-  };
-
-  var selectByWasher = function (advertisement) {
-    return selectByFeature(advertisement, washerFilter, 'washer');
-  };
-
-  var selectByElevator = function (advertisement) {
-    return selectByFeature(advertisement, elevatorFilter, 'elevator');
-  };
-
-  var selectByConditioner = function (advertisement) {
-    return selectByFeature(advertisement, conditionerFilter, 'conditioner');
+  var selectAdvertisments = function (item) {
+    return selectByType(item)
+    && selectByPrice(item)
+    && selectByRoomsQuantity(item)
+    && selectByGuestsQuantity(item)
+    && selectByFeature(item, wifiFilter)
+    && selectByFeature(item, dishwasherFilter)
+    && selectByFeature(item, parkingFilter)
+    && selectByFeature(item, washerFilter)
+    && selectByFeature(item, elevatorFilter)
+    && selectByFeature(item, conditionerFilter);
   };
 
   var showAdvertisments = function () {
@@ -85,10 +74,6 @@
     window.pin.deleteActiveClass();
 
     window.debounce(showAdvertisments);
-  };
-
-  var selectAdvertisments = function (item) {
-    return selectByType(item) && selectByPrice(item) && selectByRoomsQuantity(item) && selectByGuestsQuantity(item) && selectByWifi(item) && selectByDishwasher(item) && selectByParking(item) && selectByWasher(item) && selectByElevator(item) && selectByConditioner(item);
   };
 
   typeFilter.addEventListener('change', onFilterChange);

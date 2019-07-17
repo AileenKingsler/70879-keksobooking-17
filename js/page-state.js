@@ -12,10 +12,8 @@
   var mainPin = map.querySelector('.map__pin--main');
   var mainPinStartX = mainPin.offsetLeft;
   var mainPinStartY = mainPin.offsetTop;
-  var mainPinHalfWidth = Math.round(mainPin.offsetWidth / 2);
-  var mainPinHalfHeight = Math.round(mainPin.offsetHeight / 2);
-  var mainPinCenterX = mainPinStartX + mainPinHalfWidth;
-  var mainPinCenterY = mainPinStartY + mainPinHalfHeight;
+  var mainPinCenterX = mainPinStartX + Math.round(mainPin.offsetWidth / 2);
+  var mainPinCenterY = mainPinStartY + Math.round(mainPin.offsetHeight / 2);
 
   var addressField = adForm.querySelector('#address');
 
